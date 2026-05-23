@@ -1,0 +1,55 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Harvey
+providerId: harvey-ai
+created: '2026-05-22'
+modified: '2026-05-22'
+tags:
+- Artificial Intelligence
+- LegalTech
+- Law Firms
+- Legal Research
+- Contract Analysis
+- Due Diligence
+- Litigation
+- Workflow Agents
+- Enterprise
+- Vault
+description: Machine-readable plans scaffold for the Harvey API surface. Conforms to the API Commons Plans schema. Tier limits
+  and prices are scaffold defaults; replace with provider-published values.
+plans:
+- id: harvey-ai-free
+  name: Free
+  type: freemium
+  description: Free entry tier for the Harvey API surface. Intended for evaluation, prototyping, and low-volume integrations.
+    Real limits and pricing must be reconciled with the provider's published plan documentation.
+  entries:
+  - label: API Requests
+    description: Monthly API request quota across all included endpoints
+    name: api_requests
+    type: quota
+    metric: requests
+    limit: 1000
+    timeFrame: month
+    geo: global
+    domains:
+    - https://www.harvey.ai
+    unit: 1
+    price: '0.00'
+    userMultiplied: false
+  - label: Rate Limit
+    description: Maximum requests per minute on the free tier
+    name: rate_limit
+    type: rate
+    metric: requests_per_minute
+    limit: 10
+    timeFrame: minute
+    geo: global
+    domains:
+    - https://www.harvey.ai
+    unit: 1
+    price: '0.00'
+references:
+- name: Harvey API Documentation
+  url: https://raw.githubusercontent.com/api-evangelist/harvey-ai/refs/heads/main/apis.yml

@@ -1,0 +1,61 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Harvey
+providerId: harvey-ai
+created: '2026-05-22'
+modified: '2026-05-22'
+tags:
+- Artificial Intelligence
+- LegalTech
+- Law Firms
+- Legal Research
+- Contract Analysis
+- Due Diligence
+- Litigation
+- Workflow Agents
+- Enterprise
+- Vault
+- Rate Limiting
+- Quotas
+- Throttling
+description: Scaffolded rate limit definitions for the Harvey API surface. Captures per-tier quotas, burst behavior, response
+  signaling, and recovery semantics. Defaults are scaffold values to be replaced with published provider limits.
+headers:
+  limit: X-RateLimit-Limit
+  remaining: X-RateLimit-Remaining
+  reset: X-RateLimit-Reset
+  retryAfter: Retry-After
+  policy: RateLimit-Policy
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+  serviceUnavailable: 503
+limits:
+- tier: free
+  name: Free Tier Default
+  scope: api-key
+  metric: requests_per_minute
+  limit: 10
+  burst: 20
+  timeFrame: minute
+  applies:
+  - https://www.harvey.ai
+  description: Default per-token request rate for the free tier. Bursts above the limit return HTTP 429 with Retry-After.
+- tier: pro
+  name: Pro Tier Default
+  scope: api-key
+  metric: requests_per_minute
+  limit: 120
+  burst: 240
+  timeFrame: minute
+  applies:
+  - https://www.harvey.ai
+  description: Higher rate envelope for paid plans; reconcile against published commercial terms.
+recoveryStrategies:
+- name: Exponential Backoff
+  description: Wait Retry-After seconds (or back off exponentially up to 60s) before retrying.
+- name: Queue and Retry
+  description: Submit bulk work in batches under the burst envelope.
+notes:
+- Replace scaffold values with the provider's published rate limit policy.
