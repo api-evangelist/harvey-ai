@@ -1,127 +1,110 @@
 aid: harvey-ai
 name: Harvey
-description: >-
-  Harvey is a domain-specific AI platform built for elite law firms and
-  in-house legal departments. Its product suite includes Assistant
-  (question answering, document analysis, and drafting), Vault (secure
-  document storage and bulk analysis), Knowledge (legal, regulatory, and
-  tax research), Workflow Agents (pre-built and customizable legal
-  agents), Harvey Mobile, and an Ecosystem of integrations with existing
-  legal tools. Harvey is sold via enterprise contracts to large law firms
-  and corporate legal teams, and does not currently publish a self-serve
-  public developer API; integrations are arranged through direct sales and
-  partnership engagements.
+description: Harvey is a domain-specific AI platform built for elite law firms and
+  in-house legal departments. Its product suite includes Assistant (question answering,
+  document analysis, and drafting), Vault (secure document storage and bulk analysis),
+  Knowledge (legal, regulatory, and tax research), Workflow Agents (pre-built and
+  customizable legal agents), Harvey Mobile, and an Ecosystem of integrations with
+  existing legal tools. Harvey is sold via enterprise contracts to large law firms
+  and corporate legal teams, and does not currently publish a self-serve public developer
+  API; integrations are arranged through direct sales and partnership engagements.
 type: Index
 position: Provider
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Artificial Intelligence
-  - LegalTech
-  - Law Firms
-  - Legal Research
-  - Contract Analysis
-  - Due Diligence
-  - Litigation
-  - Workflow Agents
-  - Enterprise
-  - Vault
+- Artificial Intelligence
+- LegalTech
+- Law Firms
+- Legal Research
+- Contract Analysis
+- Due Diligence
+- Litigation
+- Workflow Agents
+- Enterprise
+- Vault
 url: https://raw.githubusercontent.com/api-evangelist/harvey-ai/refs/heads/main/apis.yml
 created: '2026-05-23'
 modified: '2026-05-23'
 specificationVersion: '0.20'
 apis:
-  - aid: harvey-ai:harvey-platform
-    name: Harvey Platform
-    description: >-
-      Harvey does not currently publish a public, self-serve developer API.
-      Integrations with document management systems, research tools, and
-      firm workflows are delivered through Harvey's Ecosystem program and
-      arranged via enterprise sales. This entry documents the Harvey
-      product surface for discoverability; specific endpoints and base
-      URLs are gated behind customer agreements.
-    humanURL: https://www.harvey.ai/products
-    baseURL: https://www.harvey.ai
-    tags:
-      - LegalTech
-      - Enterprise
-      - Workflow Agents
-      - Vault
-      - Knowledge
-    properties:
-      - type: Documentation
-        url: https://www.harvey.ai/products
-      - type: SignUp
-        url: https://www.harvey.ai/contact-sales
-      - type: Pricing
-        url: https://www.harvey.ai/contact-sales
-    features:
-      - name: Assistant
-        description: >-
-          Ask questions, analyze documents, and draft faster with
-          domain-specific legal AI.
-      - name: Vault
-        description: >-
-          Securely store, organize, and bulk-analyze legal documents.
-      - name: Knowledge
-        description: >-
-          Conduct research across legal, regulatory, and tax questions.
-      - name: Workflow Agents
-        description: >-
-          Use pre-built or custom agents tailored to firm-specific
-          workflows.
-      - name: Harvey Mobile
-        description: >-
-          Access Harvey from mobile devices for on-the-go legal work.
-      - name: Ecosystem Integrations
-        description: >-
-          Integrate Harvey with existing legal tools and document
-          management systems through partner arrangements.
-    useCases:
-      - name: Due Diligence
-        description: >-
-          Accelerate contract and document review during M&A and
-          transactional work.
-      - name: Litigation Support
-        description: >-
-          Analyze case materials, draft briefs, and surface relevant
-          authorities.
-      - name: In-House Legal Operations
-        description: >-
-          Streamline contract analysis, research, and policy work for
-          corporate legal teams.
-      - name: Mid-Market Law Firm Productivity
-        description: >-
-          Augment associates and partners with legal-grade AI workflows.
-      - name: Cross-Firm Collaboration
-        description: >-
-          Coordinate across organizations using shared workspaces.
-    integrations:
-      - name: iManage
-      - name: NetDocuments
-      - name: Microsoft 365
-      - name: Microsoft Word
-      - name: SharePoint
-      - name: Westlaw
-      - name: LexisNexis
-    authentication:
-      - type: Enterprise SSO
-        description: >-
-          Access is controlled via enterprise SSO and customer-specific
-          provisioning; no public API key program is published.
+- aid: harvey-ai:harvey-platform
+  name: Harvey Platform
+  description: Harvey does not currently publish a public, self-serve developer API.
+    Integrations with document management systems, research tools, and firm workflows
+    are delivered through Harvey's Ecosystem program and arranged via enterprise sales.
+    This entry documents the Harvey product surface for discoverability; specific
+    endpoints and base URLs are gated behind customer agreements.
+  humanURL: https://www.harvey.ai/products
+  baseURL: https://www.harvey.ai
+  tags:
+  - LegalTech
+  - Enterprise
+  - Workflow Agents
+  - Vault
+  - Knowledge
+  properties:
+  - type: Documentation
+    url: https://www.harvey.ai/products
+  - type: SignUp
+    url: https://www.harvey.ai/contact-sales
+  - type: Pricing
+    url: https://www.harvey.ai/contact-sales
+  - url: graphql/harvey-ai-graphql.md
+    type: GraphQL
+  features:
+  - name: Assistant
+    description: Ask questions, analyze documents, and draft faster with domain-specific
+      legal AI.
+  - name: Vault
+    description: Securely store, organize, and bulk-analyze legal documents.
+  - name: Knowledge
+    description: Conduct research across legal, regulatory, and tax questions.
+  - name: Workflow Agents
+    description: Use pre-built or custom agents tailored to firm-specific workflows.
+  - name: Harvey Mobile
+    description: Access Harvey from mobile devices for on-the-go legal work.
+  - name: Ecosystem Integrations
+    description: Integrate Harvey with existing legal tools and document management
+      systems through partner arrangements.
+  useCases:
+  - name: Due Diligence
+    description: Accelerate contract and document review during M&A and transactional
+      work.
+  - name: Litigation Support
+    description: Analyze case materials, draft briefs, and surface relevant authorities.
+  - name: In-House Legal Operations
+    description: Streamline contract analysis, research, and policy work for corporate
+      legal teams.
+  - name: Mid-Market Law Firm Productivity
+    description: Augment associates and partners with legal-grade AI workflows.
+  - name: Cross-Firm Collaboration
+    description: Coordinate across organizations using shared workspaces.
+  integrations:
+  - name: iManage
+  - name: NetDocuments
+  - name: Microsoft 365
+  - name: Microsoft Word
+  - name: SharePoint
+  - name: Westlaw
+  - name: LexisNexis
+  authentication:
+  - type: Enterprise SSO
+    description: Access is controlled via enterprise SSO and customer-specific provisioning;
+      no public API key program is published.
 common:
-  - type: Website
-    url: https://www.harvey.ai
-  - type: Blog
-    url: https://www.harvey.ai/blog
-  - type: TermsOfService
-    url: https://www.harvey.ai/terms-of-use
-  - type: PrivacyPolicy
-    url: https://www.harvey.ai/privacy-policy
-  - type: X
-    url: https://x.com/harvey__ai
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/harvey
+- type: Website
+  url: https://www.harvey.ai
+- type: Blog
+  url: https://www.harvey.ai/blog
+- type: TermsOfService
+  url: https://www.harvey.ai/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.harvey.ai/privacy-policy
+- type: X
+  url: https://x.com/harvey__ai
+- type: LinkedIn
+  url: https://www.linkedin.com/company/harvey
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

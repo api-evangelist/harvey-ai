@@ -1,0 +1,1360 @@
+"""
+Harvey AI GraphQL Schema
+Conceptual schema for the Harvey legal AI platform serving law firms and in-house legal departments.
+Covers matters, documents, research, drafting, review, contracts, litigation, due diligence, and platform management.
+"""
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+# ─── Root Types ───────────────────────────────────────────────────────────────
+
+type Query {
+  matter(id: ID!): Matter
+  matters(filter: MatterFilter, pagination: PaginationInput): MatterConnection
+  document(id: ID!): Document
+  documents(matterId: ID, filter: DocumentFilter, pagination: PaginationInput): DocumentConnection
+  research(id: ID!): Research
+  researchResults(queryId: ID!, pagination: PaginationInput): ResearchResultConnection
+  draft(id: ID!): Draft
+  drafts(matterId: ID, pagination: PaginationInput): DraftConnection
+  review(id: ID!): Review
+  contract(id: ID!): Contract
+  contracts(matterId: ID, filter: ContractFilter, pagination: PaginationInput): ContractConnection
+  brief(id: ID!): Brief
+  memo(id: ID!): Memo
+  conversation(id: ID!): Conversation
+  conversations(pagination: PaginationInput): ConversationConnection
+  task(id: ID!): Task
+  tasks(matterId: ID, filter: TaskFilter, pagination: PaginationInput): TaskConnection
+  jurisdiction(id: ID!): Jurisdiction
+  organization: Organization
+  models: [Model!]!
+  apiKey(id: ID!): APIKey
+  apiKeys: [APIKey!]!
+  currentUser: TeamDetails
+}
+
+type Mutation {
+  createMatter(input: CreateMatterInput!): Matter!
+  updateMatter(id: ID!, input: UpdateMatterInput!): Matter!
+  closeMatter(id: ID!): Matter!
+  uploadDocument(input: UploadDocumentInput!): Document!
+  analyzeDocument(id: ID!, options: AnalysisOptions): DocumentAnalysis!
+  submitResearchQuery(input: ResearchQueryInput!): Research!
+  createDraft(input: CreateDraftInput!): Draft!
+  updateDraft(id: ID!, input: UpdateDraftInput!): Draft!
+  requestReview(input: ReviewInput!): Review!
+  compareDocuments(input: CompareInput!): Compare!
+  createContract(input: CreateContractInput!): Contract!
+  analyzeContract(id: ID!, options: ContractAnalysisOptions): ContractAnalysis!
+  createBrief(input: CreateBriefInput!): Brief!
+  createMemo(input: CreateMemoInput!): Memo!
+  startConversation(input: StartConversationInput!): Conversation!
+  sendMessage(conversationId: ID!, input: MessageInput!): Message!
+  createTask(input: CreateTaskInput!): Task!
+  updateTask(id: ID!, input: UpdateTaskInput!): Task!
+  runDueDiligence(input: DueDiligenceInput!): DueDiligence!
+  generateTimeline(matterId: ID!): Timeline!
+  createAPIKey(input: CreateAPIKeyInput!): APIKey!
+  revokeAPIKey(id: ID!): Boolean!
+  updateOrganization(input: UpdateOrganizationInput!): Organization!
+}
+
+# ─── Matter Types ─────────────────────────────────────────────────────────────
+
+"""
+A legal matter or case managed within Harvey.
+"""
+type Matter {
+  id: ID!
+  name: String!
+  description: String
+  type: MatterType!
+  status: MatterStatus!
+  details: MatterDetails
+  documents: DocumentConnection
+  tasks: TaskConnection
+  conversations: ConversationConnection
+  timeline: Timeline
+  jurisdiction: Jurisdiction
+  assignees: [TeamDetails!]
+  tags: [String!]
+  createdAt: String!
+  updatedAt: String!
+  closedAt: String
+}
+
+"""
+Detailed metadata about a legal matter.
+"""
+type MatterDetails {
+  clientName: String
+  clientId: ID
+  opposingParty: String
+  leadAttorney: String
+  practiceArea: String
+  estimatedValue: Float
+  currency: String
+  deadline: String
+  courtName: String
+  caseNumber: String
+  filingDate: String
+  jurisdiction: Jurisdiction
+  confidentiality: String
+  billingCode: String
+  notes: String
+}
+
+"""
+Categories of legal matter types.
+"""
+enum MatterType {
+  LITIGATION
+  TRANSACTION
+  REGULATORY
+  ADVISORY
+  DUE_DILIGENCE
+  COMPLIANCE
+  IP
+  EMPLOYMENT
+  REAL_ESTATE
+  TAX
+  BANKRUPTCY
+  CORPORATE
+  OTHER
+}
+
+"""
+Lifecycle status of a legal matter.
+"""
+enum MatterStatus {
+  OPEN
+  IN_PROGRESS
+  PENDING_REVIEW
+  ON_HOLD
+  CLOSED
+  ARCHIVED
+}
+
+# ─── Document Types ───────────────────────────────────────────────────────────
+
+"""
+A document stored or analyzed within Harvey.
+"""
+type Document {
+  id: ID!
+  name: String!
+  type: DocumentType!
+  details: DocumentDetails
+  analysis: DocumentAnalysis
+  matterId: ID
+  uploadedBy: String
+  fileSize: Int
+  mimeType: String
+  pageCount: Int
+  language: String
+  tags: [String!]
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+Detailed metadata for a document.
+"""
+type DocumentDetails {
+  originalFileName: String!
+  storagePath: String
+  checksum: String
+  version: Int
+  isConfidential: Boolean
+  retentionDate: String
+  source: String
+  jurisdiction: Jurisdiction
+  parties: [String!]
+  effectiveDate: String
+  expirationDate: String
+}
+
+"""
+Types of legal documents supported by Harvey.
+"""
+enum DocumentType {
+  CONTRACT
+  BRIEF
+  MEMO
+  PLEADING
+  CORRESPONDENCE
+  EXHIBIT
+  DEPOSITION
+  STATUTE
+  REGULATION
+  CASE_LAW
+  PATENT
+  TRADEMARK
+  AGREEMENT
+  NDA
+  LEASE
+  POLICY
+  REPORT
+  OTHER
+}
+
+"""
+AI-generated analysis of a document.
+"""
+type DocumentAnalysis {
+  id: ID!
+  documentId: ID!
+  summary: String
+  keyTerms: [String!]
+  entities: [String!]
+  risks: [String!]
+  obligations: [String!]
+  deadlines: [String!]
+  clauses: [Clause!]
+  citations: [Citation!]
+  sentiment: String
+  confidenceScore: Float
+  analysisModel: String
+  analyzedAt: String!
+}
+
+# ─── Research Types ───────────────────────────────────────────────────────────
+
+"""
+A legal research session in Harvey Knowledge.
+"""
+type Research {
+  id: ID!
+  query: ResearchQuery!
+  status: String!
+  results: [ResearchResult!]
+  summary: String
+  jurisdiction: Jurisdiction
+  practiceArea: String
+  matterId: ID
+  createdAt: String!
+  completedAt: String
+}
+
+"""
+A structured query for legal research.
+"""
+type ResearchQuery {
+  id: ID!
+  text: String!
+  jurisdiction: Jurisdiction
+  practiceArea: String
+  dateRange: DateRange
+  sources: [ResearchSource!]
+  filters: [String!]
+  language: String
+}
+
+"""
+A single result from a legal research query.
+"""
+type ResearchResult {
+  id: ID!
+  researchId: ID!
+  title: String!
+  excerpt: String!
+  relevanceScore: Float
+  source: ResearchSource!
+  citation: Citation
+  caselaw: CaseLaw
+  statute: StatuteRef
+  regulation: RegulationRef
+  url: String
+  publishedDate: String
+  retrievedAt: String!
+}
+
+"""
+Sources available for legal research.
+"""
+enum ResearchSource {
+  CASE_LAW
+  STATUTES
+  REGULATIONS
+  SECONDARY_SOURCES
+  LAW_REVIEWS
+  TREATISES
+  INTERNAL_DOCUMENTS
+  WESTLAW
+  LEXISNEXIS
+}
+
+# ─── Citation & Authority Types ───────────────────────────────────────────────
+
+"""
+A legal citation to a primary or secondary source.
+"""
+type Citation {
+  id: ID!
+  text: String!
+  formatted: String
+  bluebook: String
+  source: String
+  jurisdiction: Jurisdiction
+  year: Int
+  court: String
+  caselaw: CaseLaw
+  statute: StatuteRef
+  regulation: RegulationRef
+  url: String
+  verified: Boolean
+  verifiedAt: String
+}
+
+"""
+A case law authority with full metadata.
+"""
+type CaseLaw {
+  id: ID!
+  caseName: String!
+  citation: String!
+  court: CourtDetails!
+  decisionDate: String!
+  jurisdiction: Jurisdiction!
+  holdingSummary: String
+  keyFacts: String
+  precedentialValue: String
+  overruled: Boolean
+  distinguishedBy: [String!]
+  citedBy: [Citation!]
+  fullTextUrl: String
+}
+
+"""
+Reference to a statutory provision.
+"""
+type StatuteRef {
+  id: ID!
+  title: String!
+  code: String!
+  section: String!
+  jurisdiction: Jurisdiction!
+  effectiveDate: String
+  amendedDate: String
+  text: String
+  url: String
+}
+
+"""
+Reference to a regulatory provision.
+"""
+type RegulationRef {
+  id: ID!
+  title: String!
+  code: String!
+  section: String!
+  agency: String!
+  jurisdiction: Jurisdiction!
+  effectiveDate: String
+  revisedDate: String
+  text: String
+  url: String
+}
+
+# ─── Drafting Types ───────────────────────────────────────────────────────────
+
+"""
+A document draft created or assisted by Harvey.
+"""
+type Draft {
+  id: ID!
+  title: String!
+  details: DraftDetails!
+  content: String
+  template: DraftTemplate
+  matterId: ID
+  version: Int!
+  status: String!
+  reviewComments: [ReviewComment!]
+  createdBy: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+Detailed metadata for a draft document.
+"""
+type DraftDetails {
+  documentType: DocumentType!
+  jurisdiction: Jurisdiction
+  parties: [String!]
+  effectiveDate: String
+  expirationDate: String
+  governingLaw: String
+  language: String
+  wordCount: Int
+  aiAssisted: Boolean
+  modelUsed: String
+  promptSummary: String
+}
+
+"""
+A reusable template for drafting legal documents.
+"""
+type DraftTemplate {
+  id: ID!
+  name: String!
+  description: String
+  documentType: DocumentType!
+  jurisdiction: Jurisdiction
+  clauses: [Clause!]
+  variables: [TemplateVariable!]
+  isPublic: Boolean
+  createdBy: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+A variable placeholder within a draft template.
+"""
+type TemplateVariable {
+  name: String!
+  description: String
+  required: Boolean!
+  defaultValue: String
+  type: String!
+}
+
+# ─── Review Types ─────────────────────────────────────────────────────────────
+
+"""
+A document review session, including AI and human commentary.
+"""
+type Review {
+  id: ID!
+  details: ReviewDetails!
+  documentId: ID!
+  comments: [ReviewComment!]
+  status: String!
+  summary: String
+  riskScore: Float
+  matterId: ID
+  createdBy: String
+  createdAt: String!
+  completedAt: String
+}
+
+"""
+Metadata about a review session.
+"""
+type ReviewDetails {
+  reviewType: String!
+  scope: String
+  objectives: [String!]
+  jurisdiction: Jurisdiction
+  practiceArea: String
+  priority: String
+  deadline: String
+  assignedTo: String
+  aiModel: String
+}
+
+"""
+A single comment or annotation from a review.
+"""
+type ReviewComment {
+  id: ID!
+  reviewId: ID!
+  author: String!
+  isAI: Boolean!
+  content: String!
+  location: String
+  pageNumber: Int
+  severity: String
+  category: String
+  suggestion: String
+  resolved: Boolean!
+  resolvedAt: String
+  createdAt: String!
+}
+
+# ─── Comparison Types ─────────────────────────────────────────────────────────
+
+"""
+A document comparison session.
+"""
+type Compare {
+  id: ID!
+  details: CompareDetails!
+  redline: RedlineDetails
+  summary: String
+  changeCount: Int
+  matterId: ID
+  createdAt: String!
+}
+
+"""
+Metadata for a comparison between two document versions.
+"""
+type CompareDetails {
+  baseDocumentId: ID!
+  revisedDocumentId: ID!
+  baseDocumentName: String!
+  revisedDocumentName: String!
+  comparisonType: String!
+  jurisdiction: Jurisdiction
+  highlightAdditions: Boolean
+  highlightDeletions: Boolean
+  highlightFormatChanges: Boolean
+}
+
+"""
+Redline output from a document comparison.
+"""
+type RedlineDetails {
+  additions: Int!
+  deletions: Int!
+  modifications: Int!
+  addedClauses: [Clause!]
+  removedClauses: [Clause!]
+  modifiedClauses: [ClauseDetails!]
+  exportUrl: String
+}
+
+# ─── Clause Types ─────────────────────────────────────────────────────────────
+
+"""
+A clause identified or extracted from a document.
+"""
+type Clause {
+  id: ID!
+  title: String!
+  type: ClauseType!
+  details: ClauseDetails
+  text: String!
+  location: String
+  pageNumber: Int
+  riskLevel: String
+  standardLanguage: String
+  deviation: String
+  isStandard: Boolean
+}
+
+"""
+Detailed metadata for a document clause.
+"""
+type ClauseDetails {
+  clauseType: ClauseType!
+  obligations: [String!]
+  rights: [String!]
+  conditions: [String!]
+  deadlines: [String!]
+  parties: [String!]
+  governingLaw: String
+  jurisdiction: Jurisdiction
+  notes: String
+}
+
+"""
+Categories of legal clauses.
+"""
+enum ClauseType {
+  INDEMNIFICATION
+  LIMITATION_OF_LIABILITY
+  TERMINATION
+  CONFIDENTIALITY
+  GOVERNING_LAW
+  DISPUTE_RESOLUTION
+  FORCE_MAJEURE
+  INTELLECTUAL_PROPERTY
+  NON_COMPETE
+  REPRESENTATIONS_WARRANTIES
+  PAYMENT
+  NOTICE
+  AMENDMENT
+  ASSIGNMENT
+  SEVERABILITY
+  ENTIRE_AGREEMENT
+  OTHER
+}
+
+# ─── Contract Types ───────────────────────────────────────────────────────────
+
+"""
+A contract document managed in Harvey.
+"""
+type Contract {
+  id: ID!
+  title: String!
+  details: ContractDetails!
+  analysis: ContractAnalysis
+  clauses: [Clause!]
+  parties: [String!]
+  status: String!
+  matterId: ID
+  documents: [Document!]
+  createdAt: String!
+  updatedAt: String!
+  executedAt: String
+  expiresAt: String
+}
+
+"""
+Detailed metadata for a contract.
+"""
+type ContractDetails {
+  contractType: String!
+  jurisdiction: Jurisdiction!
+  governingLaw: String
+  totalValue: Float
+  currency: String
+  paymentTerms: String
+  renewalTerms: String
+  noticePeriod: String
+  confidentiality: Boolean
+  nonCompete: Boolean
+  arbitration: Boolean
+  classActionWaiver: Boolean
+  executionDate: String
+  counterpartyName: String
+  counterpartyJurisdiction: Jurisdiction
+}
+
+"""
+AI-generated analysis of a contract.
+"""
+type ContractAnalysis {
+  id: ID!
+  contractId: ID!
+  executiveSummary: String!
+  keyObligations: [String!]!
+  keyRights: [String!]!
+  risks: [String!]!
+  unusualClauses: [Clause!]
+  missingClauses: [String!]
+  complianceFlags: [String!]
+  negotiationPoints: [String!]
+  riskScore: Float
+  analysisDate: String!
+  modelUsed: String
+}
+
+# ─── Litigation Types ─────────────────────────────────────────────────────────
+
+"""
+A litigation matter with associated briefs and case materials.
+"""
+type Litigation {
+  id: ID!
+  matterId: ID!
+  caseNumber: String
+  court: CourtDetails!
+  parties: [String!]!
+  claims: [String!]
+  briefs: [Brief!]
+  timeline: Timeline
+  status: String!
+  filingDate: String
+  trialDate: String
+  jurisdiction: Jurisdiction!
+  judge: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+A legal brief created with Harvey assistance.
+"""
+type Brief {
+  id: ID!
+  details: BriefDetails!
+  content: String
+  citations: [Citation!]
+  matterId: ID
+  litigationId: ID
+  version: Int!
+  status: String!
+  wordCount: Int
+  pageCount: Int
+  dueDate: String
+  filedAt: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+Metadata for a legal brief.
+"""
+type BriefDetails {
+  briefType: String!
+  court: CourtDetails
+  jurisdiction: Jurisdiction!
+  topic: String!
+  arguments: [String!]
+  respondingTo: String
+  pageLimit: Int
+  citationFormat: String
+  aiAssisted: Boolean
+  authoringAttorney: String
+}
+
+# ─── Memo Types ───────────────────────────────────────────────────────────────
+
+"""
+A legal memorandum generated with Harvey.
+"""
+type Memo {
+  id: ID!
+  details: MemoDetails!
+  content: String
+  citations: [Citation!]
+  matterId: ID
+  version: Int!
+  status: String!
+  wordCount: Int
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+Metadata for a legal memo.
+"""
+type MemoDetails {
+  memoType: String!
+  to: String!
+  from: String!
+  subject: String!
+  jurisdiction: Jurisdiction
+  question: String
+  conclusion: String
+  practiceArea: String
+  confidential: Boolean
+  aiAssisted: Boolean
+  modelUsed: String
+}
+
+# ─── Summary Types ────────────────────────────────────────────────────────────
+
+"""
+An AI-generated summary of a document, matter, or research result.
+"""
+type Summary {
+  id: ID!
+  details: SummaryDetails!
+  content: String!
+  keyPoints: [String!]!
+  sourceId: ID!
+  sourceType: String!
+  matterId: ID
+  createdAt: String!
+}
+
+"""
+Metadata for an AI-generated summary.
+"""
+type SummaryDetails {
+  summaryType: String!
+  targetAudience: String
+  lengthWords: Int
+  format: String
+  language: String
+  modelUsed: String
+  confidenceScore: Float
+}
+
+# ─── Timeline Types ───────────────────────────────────────────────────────────
+
+"""
+A timeline of events for a legal matter or case.
+"""
+type Timeline {
+  id: ID!
+  matterId: ID!
+  events: [TimelineEvent!]!
+  summary: String
+  startDate: String
+  endDate: String
+  generatedAt: String!
+}
+
+"""
+A single event on a legal matter timeline.
+"""
+type TimelineEvent {
+  id: ID!
+  timelineId: ID!
+  date: String!
+  title: String!
+  description: String
+  category: String!
+  documentId: ID
+  citationId: ID
+  importance: String
+  source: String
+  createdAt: String!
+}
+
+# ─── Due Diligence Types ──────────────────────────────────────────────────────
+
+"""
+A due diligence engagement managed in Harvey.
+"""
+type DueDiligence {
+  id: ID!
+  matterId: ID!
+  targetName: String!
+  status: String!
+  report: DueDiligenceReport
+  documents: [Document!]
+  contracts: [Contract!]
+  issues: [String!]
+  riskScore: Float
+  startedAt: String!
+  completedAt: String
+}
+
+"""
+A comprehensive due diligence report generated by Harvey.
+"""
+type DueDiligenceReport {
+  id: ID!
+  dueDiligenceId: ID!
+  executiveSummary: String!
+  scope: String!
+  findings: [Finding!]!
+  risks: [String!]!
+  recommendations: [String!]!
+  contractSummary: String
+  litigationSummary: String
+  complianceSummary: String
+  ipSummary: String
+  employmentSummary: String
+  riskScore: Float
+  generatedAt: String!
+  modelUsed: String
+}
+
+"""
+An individual finding within a due diligence report.
+"""
+type Finding {
+  id: ID!
+  category: String!
+  title: String!
+  description: String!
+  severity: String!
+  documentId: ID
+  recommendation: String
+  status: String
+}
+
+# ─── Pattern Analysis Types ───────────────────────────────────────────────────
+
+"""
+AI-driven pattern analysis across a corpus of documents or matters.
+"""
+type PatternAnalysis {
+  id: ID!
+  name: String!
+  scope: String!
+  documentIds: [ID!]
+  matterIds: [ID!]
+  patterns: [Pattern!]!
+  summary: String
+  insights: [String!]
+  createdAt: String!
+  completedAt: String
+}
+
+"""
+A detected pattern from corpus analysis.
+"""
+type Pattern {
+  id: ID!
+  analysisId: ID!
+  title: String!
+  description: String!
+  frequency: Int!
+  examples: [String!]
+  significance: String
+  category: String
+}
+
+# ─── Jurisdiction & Court Types ───────────────────────────────────────────────
+
+"""
+A legal jurisdiction (country, state, or regulatory body).
+"""
+type Jurisdiction {
+  id: ID!
+  name: String!
+  code: String!
+  type: String!
+  country: String!
+  region: String
+  courts: [CourtDetails!]
+  governingBodies: [String!]
+}
+
+"""
+Details about a specific court.
+"""
+type CourtDetails {
+  id: ID!
+  name: String!
+  abbreviation: String
+  jurisdiction: Jurisdiction!
+  level: String!
+  type: String!
+  location: String
+  website: String
+}
+
+# ─── Task Types ───────────────────────────────────────────────────────────────
+
+"""
+A task or work item associated with a matter or workflow.
+"""
+type Task {
+  id: ID!
+  details: TaskDetails!
+  matterId: ID
+  assignedTo: String
+  createdBy: String!
+  status: String!
+  priority: String!
+  dueDate: String
+  completedAt: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+Metadata for a task.
+"""
+type TaskDetails {
+  title: String!
+  description: String
+  taskType: String!
+  estimatedHours: Float
+  actualHours: Float
+  tags: [String!]
+  dependencies: [ID!]
+  notes: String
+  aiSuggested: Boolean
+}
+
+# ─── Conversation & Messaging Types ──────────────────────────────────────────
+
+"""
+A conversation thread with Harvey AI.
+"""
+type Conversation {
+  id: ID!
+  title: String
+  messages: [Message!]!
+  matterId: ID
+  documentId: ID
+  context: String
+  model: Model
+  tokenCount: Int
+  createdBy: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+A single message within a Harvey conversation.
+"""
+type Message {
+  id: ID!
+  conversationId: ID!
+  details: MessageDetails!
+  content: String!
+  role: MessageRole!
+  citations: [Citation!]
+  attachments: [Document!]
+  tokenCount: Int
+  createdAt: String!
+}
+
+"""
+Metadata for a conversation message.
+"""
+type MessageDetails {
+  model: String
+  temperature: Float
+  maxTokens: Int
+  promptTokens: Int
+  completionTokens: Int
+  latencyMs: Int
+  finishReason: String
+}
+
+"""
+The role of a message sender in a conversation.
+"""
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+# ─── Platform & API Management Types ─────────────────────────────────────────
+
+"""
+An AI model available within the Harvey platform.
+"""
+type Model {
+  id: ID!
+  name: String!
+  provider: String!
+  version: String
+  description: String
+  capabilities: [String!]!
+  maxTokens: Int
+  inputCostPer1k: Float
+  outputCostPer1k: Float
+  isDefault: Boolean
+  isAvailable: Boolean
+}
+
+"""
+An API key for programmatic access to Harvey.
+"""
+type APIKey {
+  id: ID!
+  name: String!
+  prefix: String!
+  scopes: [String!]!
+  isActive: Boolean!
+  lastUsedAt: String
+  expiresAt: String
+  createdBy: String!
+  createdAt: String!
+}
+
+"""
+Represents an authentication token for a Harvey session.
+"""
+type Token {
+  accessToken: String!
+  tokenType: String!
+  expiresIn: Int!
+  scope: String
+  issuedAt: String!
+}
+
+"""
+The Harvey organization (firm or company account).
+"""
+type Organization {
+  id: ID!
+  name: String!
+  type: String!
+  domain: String
+  ssoEnabled: Boolean!
+  ssoProvider: String
+  allowedDomains: [String!]
+  defaultModel: Model
+  dataResidency: String
+  complianceFrameworks: [String!]
+  maxUsers: Int
+  currentUsers: Int
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+A Harvey platform user / team member.
+"""
+type TeamDetails {
+  id: ID!
+  email: String!
+  name: String!
+  role: String!
+  title: String
+  barNumber: String
+  jurisdiction: Jurisdiction
+  practiceAreas: [String!]
+  organizationId: ID!
+  isActive: Boolean!
+  mfaEnabled: Boolean!
+  lastLoginAt: String
+  createdAt: String!
+}
+
+# ─── Connection / Pagination Types ───────────────────────────────────────────
+
+type MatterConnection {
+  nodes: [Matter!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type DocumentConnection {
+  nodes: [Document!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ResearchResultConnection {
+  nodes: [ResearchResult!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type DraftConnection {
+  nodes: [Draft!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ContractConnection {
+  nodes: [Contract!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ConversationConnection {
+  nodes: [Conversation!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TaskConnection {
+  nodes: [Task!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# ─── Input Types ─────────────────────────────────────────────────────────────
+
+input PaginationInput {
+  first: Int
+  after: String
+  last: Int
+  before: String
+}
+
+input MatterFilter {
+  type: MatterType
+  status: MatterStatus
+  jurisdictionId: ID
+  assigneeId: ID
+  tags: [String!]
+  createdAfter: String
+  createdBefore: String
+}
+
+input DocumentFilter {
+  type: DocumentType
+  uploadedAfter: String
+  uploadedBefore: String
+  tags: [String!]
+}
+
+input ContractFilter {
+  status: String
+  jurisdictionId: ID
+  expiringBefore: String
+}
+
+input TaskFilter {
+  status: String
+  priority: String
+  assignedTo: String
+  dueAfter: String
+  dueBefore: String
+}
+
+input CreateMatterInput {
+  name: String!
+  description: String
+  type: MatterType!
+  jurisdictionId: ID
+  clientName: String
+  leadAttorney: String
+  deadline: String
+  tags: [String!]
+}
+
+input UpdateMatterInput {
+  name: String
+  description: String
+  status: MatterStatus
+  deadline: String
+  tags: [String!]
+}
+
+input UploadDocumentInput {
+  name: String!
+  type: DocumentType!
+  matterId: ID
+  base64Content: String
+  url: String
+  tags: [String!]
+}
+
+input AnalysisOptions {
+  includeSummary: Boolean
+  extractClauses: Boolean
+  identifyRisks: Boolean
+  citationCheck: Boolean
+  modelId: ID
+}
+
+input ResearchQueryInput {
+  text: String!
+  jurisdictionId: ID
+  practiceArea: String
+  sources: [ResearchSource!]
+  dateRangeStart: String
+  dateRangeEnd: String
+  matterId: ID
+}
+
+input CreateDraftInput {
+  title: String!
+  documentType: DocumentType!
+  templateId: ID
+  matterId: ID
+  jurisdictionId: ID
+  parties: [String!]
+  prompt: String
+  modelId: ID
+}
+
+input UpdateDraftInput {
+  title: String
+  content: String
+  status: String
+}
+
+input ReviewInput {
+  documentId: ID!
+  reviewType: String!
+  matterId: ID
+  objectives: [String!]
+  deadline: String
+  assignedTo: String
+}
+
+input CompareInput {
+  baseDocumentId: ID!
+  revisedDocumentId: ID!
+  comparisonType: String!
+  matterId: ID
+}
+
+input CreateContractInput {
+  title: String!
+  contractType: String!
+  jurisdictionId: ID!
+  parties: [String!]!
+  matterId: ID
+  documentId: ID
+  effectiveDate: String
+  expirationDate: String
+}
+
+input ContractAnalysisOptions {
+  extractClauses: Boolean
+  identifyRisks: Boolean
+  flagUnusualTerms: Boolean
+  identifyMissingClauses: Boolean
+  modelId: ID
+}
+
+input CreateBriefInput {
+  briefType: String!
+  topic: String!
+  jurisdictionId: ID!
+  matterId: ID
+  litigationId: ID
+  arguments: [String!]
+  pageLimit: Int
+  dueDate: String
+}
+
+input CreateMemoInput {
+  to: String!
+  from: String!
+  subject: String!
+  memoType: String!
+  question: String
+  matterId: ID
+  jurisdictionId: ID
+  confidential: Boolean
+}
+
+input StartConversationInput {
+  title: String
+  matterId: ID
+  documentId: ID
+  modelId: ID
+  systemPrompt: String
+}
+
+input MessageInput {
+  content: String!
+  attachmentIds: [ID!]
+}
+
+input CreateTaskInput {
+  title: String!
+  description: String
+  taskType: String!
+  matterId: ID
+  assignedTo: String
+  priority: String!
+  dueDate: String
+}
+
+input UpdateTaskInput {
+  title: String
+  description: String
+  status: String
+  priority: String
+  assignedTo: String
+  dueDate: String
+}
+
+input DueDiligenceInput {
+  targetName: String!
+  matterId: ID!
+  scope: String!
+  documentIds: [ID!]
+  includeContracts: Boolean
+  includeLitigation: Boolean
+  includeCompliance: Boolean
+  includeIP: Boolean
+}
+
+input CreateAPIKeyInput {
+  name: String!
+  scopes: [String!]!
+  expiresAt: String
+}
+
+input UpdateOrganizationInput {
+  name: String
+  ssoEnabled: Boolean
+  ssoProvider: String
+  defaultModelId: ID
+  dataResidency: String
+}
+
+# ─── Scalar / Utility Types ───────────────────────────────────────────────────
+
+type DateRange {
+  start: String!
+  end: String!
+}
