@@ -3,19 +3,18 @@
   "feeds": [
     {
       "source": "https://www.harvey.ai/blog",
-      "feed_url": "https://www.harvey.ai/blog",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "feed_url": "",
+      "saved": 11,
+      "method": "agent-scrape"
     },
     {
       "source": "https://www.harvey.ai",
-      "feed_url": "https://www.harvey.ai",
-      "title": "",
+      "feed_url": "",
       "saved": 0,
-      "method": "none"
+      "method": "agent-scrape"
     }
   ],
-  "post_count": 15,
-  "fetched": "2026-06-14T20:42:17Z"
+  "post_count": 36,
+  "fetched": "2026-06-27T12:45:27Z",
+  "agent_pulled": "2026-06-27"
 }

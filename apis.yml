@@ -46,7 +46,7 @@ apis:
   properties:
   - type: Documentation
     url: https://www.harvey.ai/products
-  - type: SignUp
+  - type: Signup
     url: https://www.harvey.ai/contact-sales
   - type: Pricing
     url: https://www.harvey.ai/contact-sales
