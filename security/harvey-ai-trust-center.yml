@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://trust.harvey.ai/
+url: https://trust.harvey.ai/
+certifications:
+- SOC 2
+- ISO 27001
+- GDPR
+evidence:
+- source: https://trust.harvey.ai/
+  keywords:
+  - soc 2
+  - iso/iec 27001
+  - trust center
+  - gdpr

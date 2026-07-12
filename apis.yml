@@ -93,6 +93,12 @@ apis:
     description: Access is controlled via enterprise SSO and customer-specific provisioning;
       no public API key program is published.
 common:
+- type: TrustCenter
+  url: security/harvey-ai-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/harvey-ai-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/harvey-ai-domain-security.yml
 - type: Website
   url: https://www.harvey.ai
 - type: Blog
