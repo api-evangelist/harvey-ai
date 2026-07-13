@@ -2,19 +2,14 @@
   "repo": "harvey-ai",
   "feeds": [
     {
-      "source": "https://www.harvey.ai/blog",
-      "feed_url": "",
-      "saved": 11,
-      "method": "agent-scrape"
-    },
-    {
       "source": "https://www.harvey.ai",
-      "feed_url": "",
+      "feed_url": "https://www.harvey.ai",
+      "title": "",
       "saved": 0,
-      "method": "agent-scrape"
+      "method": "none"
     }
   ],
-  "post_count": 36,
-  "fetched": "2026-06-27T12:45:27Z",
-  "agent_pulled": "2026-06-27"
+  "post_count": 46,
+  "fetched": "2026-07-11T11:50:51Z",
+  "agent_pulled": "2026-07-04"
 }
