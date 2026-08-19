@@ -38,7 +38,7 @@ tags:
 url: https://raw.githubusercontent.com/api-evangelist/harvey-ai/refs/heads/main/apis.yml
 created: '2026-05-23'
 modified: '2026-05-23'
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 apis:
 - aid: harvey-ai:harvey-platform
   name: Harvey Platform
