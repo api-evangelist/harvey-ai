@@ -26,6 +26,17 @@ access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/harvey-ai.png
 tags:
 - Artificial Intelligence
+- Legal Tech
+- Law Firms
+- Legal Research
+- Contract Analysis
+- Due Diligence
+- Litigation
+- Workflow Agents
+- Enterprise
+- Vault
+tags_raw:
+- Artificial Intelligence
 - LegalTech
 - Law Firms
 - Legal Research
@@ -50,6 +61,12 @@ apis:
   humanURL: https://www.harvey.ai/products
   baseURL: https://www.harvey.ai
   tags:
+  - Legal Tech
+  - Enterprise
+  - Workflow Agents
+  - Vault
+  - Knowledge
+  tags_raw:
   - LegalTech
   - Enterprise
   - Workflow Agents
