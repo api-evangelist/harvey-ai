@@ -9,6 +9,17 @@ description: Harvey is a domain-specific AI platform built for elite law firms a
   and corporate legal teams, and does not currently publish a self-serve public developer
   API; integrations are arranged through direct sales and partnership engagements.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: free
   onboarding: unknown
