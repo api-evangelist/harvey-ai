@@ -58,6 +58,8 @@ tags_raw:
 - Enterprise
 - Vault
 url: https://raw.githubusercontent.com/api-evangelist/harvey-ai/refs/heads/main/apis.yml
+x-api-posture: docs-gated
+x-api-posture-basis: observed
 created: '2026-05-23'
 modified: '2026-05-23'
 specificationVersion: '0.23'
