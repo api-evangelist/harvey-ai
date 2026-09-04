@@ -32,7 +32,7 @@ accessModel:
   - plans
   generated: '2026-07-22'
   method: derived
-position: Provider
+position: Producing
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/harvey-ai.png
 tags:
