@@ -92,8 +92,6 @@ apis:
     url: https://www.harvey.ai/contact-sales
   - type: Pricing
     url: https://www.harvey.ai/contact-sales
-  - url: graphql/harvey-ai-graphql.md
-    type: GraphQL
   features:
   - name: Assistant
     description: Ask questions, analyze documents, and draft faster with domain-specific
