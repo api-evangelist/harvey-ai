@@ -72,7 +72,6 @@ apis:
     This entry documents the Harvey product surface for discoverability; specific
     endpoints and base URLs are gated behind customer agreements.
   humanURL: https://www.harvey.ai/products
-  baseURL: https://www.harvey.ai
   tags:
   - Legal Tech
   - Enterprise
