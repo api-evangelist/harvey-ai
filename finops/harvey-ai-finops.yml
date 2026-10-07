@@ -1,11 +1,14 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (dated 2026-05-22 by the file itself), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+# Coverage demoted 2026-10-07 (roadmap#942, PLAN.md Stage A): this file was written by an API Evangelist
+# sweep and names no billing unit, meters or pricing category read from the provider — it restates the
+# FinOps framework. It is `x-coverage: unmeasured`, and the FOCUS alignment it claimed has been removed.
+x-coverage: unmeasured
+method: generated
+generated: '2026-05-22'
 specification: FinOps Framework
 specificationVersion: '1.0'
-alignedWith:
-  framework: FinOps Foundation Framework
-  frameworkUrl: https://www.finops.org/framework/
-  dataSpec: FOCUS
-  dataSpecVersion: '1.3'
-  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 provider: Harvey
 providerId: harvey-ai
 publisherName: Harvey
