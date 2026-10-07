@@ -132,6 +132,8 @@ apis:
     description: Access is controlled via enterprise SSO and customer-specific provisioning;
       no public API key program is published.
 common:
+- type: Plans
+  url: plans/harvey-ai-plans-pricing.yml
 - type: TrustCenter
   url: security/harvey-ai-trust-center.yml
 - type: VulnerabilityDisclosure
