@@ -12,6 +12,6 @@
   channel: distribution
   evidence: https://azuremarketplace.microsoft.com/en-us/marketplace/apps?search=Harvey
   source: edge
-  relationship: platform-app
+  relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
