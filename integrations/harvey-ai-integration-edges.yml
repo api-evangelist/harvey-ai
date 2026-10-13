@@ -1,0 +1,24 @@
+generated: '2026-10-13'
+method: searched
+checked:
+- https://azuremarketplace.microsoft.com/
+marketplace_apps: []
+edges:
+- partner_name: Microsoft Azure Marketplace
+  partner: microsoft-azure
+  partner_match: aggregator
+  type: marketplace
+  marketplace: azure-marketplace
+  channel: distribution
+  relationship: platform-app
+  direction: provider-built
+  evidence: https://azuremarketplace.microsoft.com/en-us/marketplace/apps?search=Harvey
+  listing_count: 4
+  apps:
+  - Harvey - Azure Marketplace 1
+  - Harvey - Azure Marketplace 3
+  - Harvey - Azure Marketplace 2
+  - Harvey - Azure Marketplace 4
+  seller_name: Harvey
+  detected_by: sweep-cloud-marketplaces.py
+  detected: '2026-10-13'
